@@ -1,0 +1,55 @@
+{% extends "bootstrap_5_layout.html" %}
+ {% set active_page = "unemployment_dashboard" %}
+
+ {% block content %}
+
+     <h2>Unemployment Dashboard</h2>
+
+     <div>
+         <p>Latest Date: <span id="display-latest-date">__________</span></p>
+         <p>Latest Rate: <span id="display-latest-rate">__________</span></p>
+     </div>
+
+     <div id="dataviz-container"></div>
+
+
+     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+     <script type="text/javascript">
+
+         // processing the specific JSON response data returned by the router:
+         var responseData = JSON.parse('{{data | tojson}}')
+         console.log(responseData)
+
+         var dates = [] //> an array of date keys, for the chart ["2020-01-27", "2020-01-24", "2020-01-23", etc.]
+         var rates = [] //> an array of price objects
+
+         responseData.forEach(row => {
+             dates.push(row["timestamp"])
+             rates.push(row["value"])
+         });
+
+         var latestDate = dates[0]
+         var earliestDate = dates[dates.length - 1]
+         console.log("DATE RANGE:", earliestDate, "-", latestDate)
+
+         var latestRate = rates[0]
+         var latestRatePct = latestRate + "%" // formatting the number with dollar sign and rounding to two decimal places
+         console.log("LATEST RATE:", latestRatePct)
+
+         // updating the contents of the page:
+         var displayLatestDate = document.getElementById("display-latest-date")
+         var displayLatestRate = document.getElementById("display-latest-rate")
+         displayLatestDate.innerText = latestDate
+         displayLatestRate.innerText = latestRatePct
+
+         // charting the data (see https://plotly.com/javascript/line-charts/):
+         var title = "Unemployment Rates over Time"
+         var layout = {title: title, height: 500}
+         var chartData = [
+             {x: dates, y: rates, mode: "lines+markers"}
+         ]
+         Plotly.newPlot("dataviz-container", chartData, layout, {responsive: true})
+
+     </script>
+
+ {% endblock %}

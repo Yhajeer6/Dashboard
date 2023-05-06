@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h2>Stocks Dashboard</h2>
+
+    <div>
+        <p>Selected Stock: <span id="display-symbol">{{ symbol }}</span></p>
+        <table>
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Gross Profit</th>
+                <th>Total Revenue</th>
+                <th>Operating Income</th>
+                <th>Net Income</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for record in data["annualReports"] %}
+                <tr>
+                  <td>{{ record.fiscalDateEnding[:4] }}</td>
+                  <td>{{ record.grossProfit }}</td>
+                  <td>{{ record.totalRevenue }}</td>
+                  <td>{{ record.operatingIncome }}</td>
+                  <td>{{ record.netIncome }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+       
+    </div>
+
+
+{% endblock %}
