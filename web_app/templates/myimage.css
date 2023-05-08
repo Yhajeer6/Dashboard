@@ -1,0 +1,5 @@
+.myimage {
+    width: 1000px !important;
+    height: auto;
+    max-width: none !important;
+}

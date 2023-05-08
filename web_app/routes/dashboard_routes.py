@@ -40,24 +40,6 @@ def stocks_dashboard():
         #flash("OOPS", "warning")
         return redirect("/stocks/form")
     
-@dashboard_routes.route("/unemployment/dashboard")
-def unemployment_dashboard():
-    print("UNEMPLOYMENT DASHBOARD...")
-
-    try:
-        alpha = AlphavantageService()
-        df = alpha.fetch_unemployment()
-        if not df.empty:
-            data = df.to_dict("records") # convert data to list of dictionaries (JSON stucture)
-            return render_template("unemployment_dashboard.html", data=data)
-        else:
-            #flash("OOPS", "warning")
-            return redirect("/")
-    except Exception as err:
-        print("ERROR", err)
-        #flash("OOPS", "warning")
-        return redirect("/")
-    
 @dashboard_routes.route("/income/form")
 def income_form():
     print("INCOME FORM...")
@@ -90,14 +72,19 @@ def income_dashboard():
         response = requests.get(request_url)
         data = json.loads(response.text)
 
+        request_url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={symbol}&apikey={ALPHAVANTAGE_API_KEY}"
+        response = requests.get(request_url)
+        bs_data = json.loads(response.text)
+
+        request_url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={symbol}&apikey={ALPHAVANTAGE_API_KEY}"
+        response = requests.get(request_url)
+        cf_data = json.loads(response.text)
 
         # pass this data to the page:
         #print(data)
-        return render_template("income_dashboard.html", symbol=symbol, data=data)
+        return render_template("income_dashboard.html", symbol=symbol, data=data, bs_data=bs_data, cf_data=cf_data)
         
     except Exception as err:
         print("ERROR", err)
         #flash("OOPS", "warning")
         return redirect("/stocks/form")
-    
-

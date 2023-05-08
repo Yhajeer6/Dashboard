@@ -60,7 +60,7 @@ Create a new file called ".env" in the root directory of your local repository, 
 FLASK_APP="web_app"
 
 # for interfacing with the AlphaVantage API:
-ALPHAVANTAGE_API_KEY="________"
+ALPHAVANTAGE_API_KEY="51W3X1ISPF56U274"
 ```
 
 > NOTE: when you push your repository to GitHub, the ".env" file does not show up - this is desired behavior, as designated by the ".gitignore" file, to prevent our secret credentials stored in the ".env" file from being uploaded or exposed on GitHub.

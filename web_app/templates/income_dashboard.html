@@ -1,35 +1,110 @@
-{% extends "layout.html" %}
-
+{% extends "bootstrap_5_layout.html" %}
+{% set active_page = "income_form" %}
 {% block content %}
 
-    <h2>Stocks Dashboard</h2>
+<head>
+    <title>Ecommerce Final Project</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
 
-    <div>
-        <p>Selected Stock: <span id="display-symbol">{{ symbol }}</span></p>
-        <table>
-            <thead>
-              <tr>
-                <th>Year</th>
-                <th>Gross Profit</th>
-                <th>Total Revenue</th>
-                <th>Operating Income</th>
-                <th>Net Income</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for record in data["annualReports"] %}
-                <tr>
-                  <td>{{ record.fiscalDateEnding[:4] }}</td>
-                  <td>{{ record.grossProfit }}</td>
-                  <td>{{ record.totalRevenue }}</td>
-                  <td>{{ record.operatingIncome }}</td>
-                  <td>{{ record.netIncome }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-       
+<div class="stock-tables">
+    <h2 class="mb-4">Stocks Dashboard</h2>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <div class="row mb-5">
+        <div class="col-sm-6">
+            <h4 class="mb-3">Selected Stock: <span id="display-symbol">{{ symbol }}</span></h4>
+        </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="mb-3">Income Statement</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Year</th>
+                            <th scope="col">Gross Profit</th>
+                            <th scope="col">Total Revenue</th>
+                            <th scope="col">Operating Income</th>
+                            <th scope="col">Net Income</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in data["annualReports"] %}
+                        <tr>
+                            <td scope="row">{{ record.fiscalDateEnding[:4] }}</td>
+                            <td>${{ record.grossProfit }}</td>
+                            <td>${{ record.totalRevenue }}</td>
+                            <td>${{ record.operatingIncome }}</td>
+                            <td>${{ record.netIncome }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+       
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="mb-3">Balance Sheet</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Year</th>
+                            <th scope="col">Total Assets</th>
+                            <th scope="col">Total Liabilities</th>
+                            <th scope="col">Shareholder Equity</th>
+                            <th scope="col">Retained Earnings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in bs_data["annualReports"] %}
+                        <tr>
+                            <td scope="row">{{ record.fiscalDateEnding[:4] }}</td>
+                            <td>${{ record.totalAssets }}</td>
+                            <td>${{ record.totalLiabilities }}</td>
+                            <td>${{ record.totalShareholderEquity }}</td>
+                            <td>${{ record.retainedEarnings }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="mb-3">Statement of Cash Flows</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Year</th>
+                            <th scope="col">Operating Net Cash</th>
+                            <th scope="col">Investing Net Cash</th>
+                            <th scope="col">Financing Net Cash</th>
+                            <th scope="col">Net Income</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in cf_data["annualReports"] %}
+                        <tr>
+                            <td scope="row">{{ record.fiscalDateEnding[:4] }}</td>
+                            <td>${{ record.changeInOperatingAssets }}</td>
+                            <td>${{ record.cashflowFromInvestment }}</td>
+                            <td>${{ record.cashflowFromFinancing }}</td>
+                            <td>${{ record.netIncome }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
 {% endblock %}
+
